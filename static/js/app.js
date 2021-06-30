@@ -23,21 +23,27 @@ function buildTable(data) {
     });
 }
 
+function handleClick() {
+    // 1. Grab datetime value from the filter
+    let date = d3.select("#datetime").property("value");
+    let filteredData = tableData;
 
-// Simple JavaScript console.log statement
-printHello = () => "Hello there!";
+    // 2. If date was entered,then filter table data to only
+    // keep rows where the 'datetime' value matches filter value.
+    if (date) {
+        filteredData = filteredData.filter(row => row.datetime === date);
+    };
 
-// Takes two numbers and adds them
-addition = (a, b) => a + b;
+    // Rebuild the table using the filtered data
+    // @NOTE: If no date was entered, then filteredData will
+    // just be the original tableData.
+    buildTable(filteredData);
+}
 
-// Functions can call other functions
-function doubleAddition(c, d) {
-    var total = addition(c, d) * 2;
-    return total;
-  }
+// Attach an event to listen for the form button
+d3.selectAll("#filter-btn").on("click", handleClick);
 
-function listLoop(userList) {
-    for (var i = 0; i < userList.length; i++) {
-      console.log(userList[i]);
-    }
- }
+// Build the table when the page loads
+buildTable(tableData);
+
+
